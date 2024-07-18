@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="received_tree" model="ir.ui.view">
+        <field name="name">Received Sms Tree</field>
+        <field name="model">r.sms</field>
+        <field name="arch" type="xml">
+            <tree >
+                <field name="content"/>
+                <field name="fr" string="From"/>
+                <field name="create_date" string="Date"/>
+                <field name="partner_id" string="Contact"/>
+                <field name="other_sms_ids" string="Convo"/>
+            </tree>
+        </field>
+    </record>
+    <record id="received_form" model="ir.ui.view">
+        <field name="name">Received Sms Form</field>
+        <field name="model">r.sms</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="create_date" string="Date"/>
+                        <field name="content"/>
+                        <field name="fr" string="From"/>
+                        <field name="partner_id" string="Contact"/>
+                        <field name="other_sms_ids" string="Previously sent"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_rr_sms" model="ir.actions.act_window">
+        <field name="name">Received Sms</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">r.sms</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Receive your sms messages here please
+            </p>
+        </field>
+    </record>
+    <record id="r_sms_search" model="ir.ui.view">
+        <field name="name">sms.s.search</field>
+        <field name="model">r.sms</field>
+        <field name="priority">1</field>
+        <field name="arch" type="xml">
+            <search string="Search received Messages">
+                <field name="fr"/>
+                <field name="content"/>
+                <field name="partner_id"/>
+            </search>
+        </field>
+    </record>
+
+    <menuitem id="jasmin_menu_root"
+              name="SMS Manager"
+              sequence="21"/>
+    <menuitem id="received_jasmin_menu_root"
+              parent="jasmin_menu_root"
+              name="Received"
+              action="action_rr_sms"
+              sequence="2"/>
+</odoo>

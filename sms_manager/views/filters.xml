@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="filter_graph" model="ir.ui.view">
+         <field name="name">Filter's Graph</field>
+         <field name="model">filter.sms</field>
+         <field name="arch" type="xml">
+             <graph string="Filtered Sms Analysis" type="bar">
+                 <field name="filter"/>
+                 <field name="count" type="measure"/>
+             </graph>
+         </field>
+    </record>
+    <record id="filter_tree" model="ir.ui.view">
+        <field name="name">Received Sms Tree</field>
+        <field name="model">filter.sms</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="filter"/>
+                <field name="sms_ids" string="Number Of Messages"/>
+                <field name="create_date" string="Date"/>
+            </tree>
+        </field>
+    </record>
+    <record id="action_filter" model="ir.actions.act_window">
+        <field name="name">Filtered Messages</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">filter.sms</field>
+        <field name="view_mode">graph,tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Add Filters Here
+            </p>
+        </field>
+    </record>
+    <menuitem id="filter_jasmin_menu"
+              parent="jasmin_menu_root"
+              name="Filters"
+              action="action_filter"
+              sequence="3"/>
+</odoo>

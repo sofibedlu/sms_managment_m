@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sent_tree" model="ir.ui.view">
+        <field name="name">Sent Sms Tree</field>
+        <field name="model">s.sms</field>
+        <field name="arch" type="xml">
+            <tree create="false" edit="false" >
+                <field name="msg" string="Message"/>
+                <field name="to" string="To"/>
+                <field name="url" string="Url"/>
+                <field name="create_date" string="Date"/>
+                <field name="status" string="Status"/>
+                <field name="create_uid" string="Creator"/>
+            </tree>
+        </field>
+    </record>
+    <record id="sent_form" model="ir.ui.view">
+        <field name="name">Received Sms Form</field>
+        <field name="model">s.sms</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="msg" string="Message"/>
+                        <field name="to" string="To"/>
+                        <field name="url" string="Url"/>
+                        <field name="create_date" string="Date"/>
+                        <field name="status" string="Status"/>
+                        <field name="create_uid" string="Creator"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="action_s_sms" model="ir.actions.act_window">
+        <field name="name">Sent Sms</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">s.sms</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+               You can see Your sent sms messages here
+            </p>
+        </field>
+    </record>
+           <record id="sent_sms_search" model="ir.ui.view">
+            <field name="name">sms.s.search</field>
+            <field name="model">s.sms</field>
+            <field name="priority">1</field>
+            <field name="arch" type="xml">
+                <search string="Search Sent Messages">
+                    <field name="to"/>
+                    <field name="msg"/>
+                    <field name="create_uid"/>
+                </search>
+            </field>
+        </record>
+
+    <menuitem id="sent_jasmin_menu_root"
+              parent="jasmin_menu_root"
+              name="Sent"
+              action="action_s_sms"
+              sequence="4"/>
+</odoo>

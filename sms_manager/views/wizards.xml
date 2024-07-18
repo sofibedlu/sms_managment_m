@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--      wizard to check balance-->
+    <record id="check_balance" model="ir.ui.view">
+        <field name="name">Sms Conversations</field>
+        <field name="model">balance.sms</field>
+        <field name="arch" type="xml">
+            <form class="o_form_document">
+                <script>
+                    $(document).ready(function(){
+                    $(".modal-footer").hide();
+                    });
+                </script>
+                <sheet>
+                    Sms Count
+                    <field name="sms_count" string="Sms Count"/>
+                    Balance
+                    <field name="balance" string="Balance"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <act_window id="send_wiz"
+                binding_model="gateway.sms"
+                name="Request Balance"
+                res_model="balance.sms"
+                view_mode="form"
+                target="new"/>
+    <!--    wizard to see all convo-->
+    <record id="sms_wizard" model="ir.ui.view">
+        <field name="name">Sms Conversations</field>
+        <field name="model">all.sms</field>
+        <field name="arch" type="xml">
+            <form class="o_form_document">
+                <script>
+                    $(document).ready(function(){
+                    $(".modal-footer").hide();
+                    });
+                </script>
+                <sheet>
+                    Received Messages
+                    <field name="sms_sent" string="Sent Messages"/>
+                    Sent Messages
+                    <field name="received" string="Received Messages Messages"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <act_window id="lunch_wiz"
+                binding_model="r.sms"
+                name="See All Conversations"
+                res_model="all.sms"
+                view_mode="form"
+                target="new"/>
+
+    <!--    wizard to send sms messages-->
+
+    <record id="sms_wizard" model="ir.ui.view">
+        <field name="name">Sms Conversations</field>
+        <field name="model">send.sms</field>
+        <field name="arch" type="xml">
+            <form class="o_form_document" string="Send Sms through Jasmin">
+                <!--                <script>-->
+                <!--                    $(document).ready(function(){-->
+                <!--                    $(".modal-footer").hide();-->
+                <!--                    });-->
+                <!--                </script>-->
+                <group string="Gateway" colspan="4">
+                    <field name="gateway"/>
+                </group>
+                <!--                <sheet>-->
+                <!--                    To-->
+                <!--                    <field name="to" string="To"/>-->
+                <!--                    Message-->
+                <!--                    <field name="message" string="Message"/>-->
+                <!--                    Gateway-->
+                <!--                    <field name="gateway" string="Gateway"/>-->
+                <notebook>
+                    <page string="Message">
+                        <field name="message" colspan="4" nolabel="1" style="height:100px;"/>
+                    </page>
+                    <page string="To">
+                        <field name="to" colspan="4" nolabel="1"/>
+                    </page>
+
+                </notebook>
+                <footer>
+                    <button name="send_message" type="object" string="Send" class="btn btn-primary"/>
+                </footer>
+                <!--                </sheet>-->
+            </form>
+        </field>
+    </record>
+
+
+    <act_window id="lunch_send"
+                binding_model="res.partner"
+                name="Send SMS To Contact"
+                res_model="send.sms"
+                view_mode="form"
+                target="new"/>
+
+
+    <!--    wizard to send mass sms-->
+
+    <record model="ir.ui.view" id="view_part_sms">
+        <field name="name">part.sms.view</field>
+        <field name="model">mass.sms</field>
+        <field name="arch" type="xml">
+            <form string="SMS Gateway - Sens SMS" version="7.0">
+                <group string="Gateway" colspan="4">
+                    <field name="gateway"/>
+                </group>
+                <notebook>
+                    <page string="Message">
+                        <field name="message" colspan="4" nolabel="1" style="height:100px;"/>
+                    </page>
+
+                </notebook>
+                <footer>
+                    <button string="Send Mass SMS" name="send_mass_sms" type="object" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <act_window name="Send SMS to Company Memebers"
+                res_model="mass.sms"
+                binding_model="res.partner"
+                view_mode="form"
+                target="new"
+                binding_views="form"
+                id="mass_sms"/>
+</odoo>

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="list_kanban" model="ir.ui.view">
+        <field name="name">list.kanban</field>
+        <field name="model">list.sms</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="status" disable_drag_drop_record="true">
+                <field name="name"/>
+                <field name="content"/>
+                <field name="type"/>
+                <field name="color"/>
+                <field name="count"/>
+                <field name="delivered"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)}">
+                            <div t-attf-class="oe_kanban_global_click">
+                                <div class="oe_kanban_details">
+                                    <strong class="o_kanban_record_title">
+                                        <h1>
+                                            <field name="name"/>
+                                        </h1>
+                                    </strong>
+                                    <h3>
+                                        <field name="content"/>
+                                    </h3>
+                                    <div t-attf-class="#{kanban_color(record.color.raw_value)}">
+                                        Count :
+                                        <field name="count"/>
+                                        Delivered :
+                                        <field name="delivered"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+
+    <record id="campaign_calander" model="ir.ui.view">
+        <field name="name">list.calendar</field>
+        <field name="model">list.sms</field>
+        <field name="arch" type="xml">
+            <calendar string="Campaign Calander" date_start="send_time" color="create_uid">
+                <field name="name"/>
+                <field name="content"/>
+                <field name="type"/>
+                <field name="status"/>
+                <field name="send_time"/>
+            </calendar>
+        </field>
+    </record>
+
+
+    <record id="list_tree" model="ir.ui.view">
+        <field name="name">List Campaign Sms Tree</field>
+        <field name="model">list.sms</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="send_time" string="Sending Time"/>
+                <field name="name" string="Subject" optional="hide"/>
+                <field name="content" optional="hide"/>
+                <field name="type" string="Campagin Type"/>
+                <field name="batchid" string="Response ID"/>
+                <field name="count" string="Total SMS"/>
+                <field name="status" string="Status"/>
+                <field name="delivered" string="Delivered"/>
+                <field name="user_id" string="Sent By"/>
+            </tree>
+
+        </field>
+    </record>
+
+    <!-- sms campaign filters -->
+    <record id="view_search_campaign" model="ir.ui.view">
+        <field name="name">Campaign Search</field>
+        <field name="model">list.sms</field>
+        <field name="arch" type="xml">
+            <search string="Search Campaign">
+                <field name="user_id"/>
+                <filter string="Scheduled" name="scheduled" domain="[('status', '=', 's')]"/>
+                <filter string="Sent" name="scheduled" domain="[('status', '=', 'st')]"/>
+                <filter string="Delivered" name="scheduled" domain="[('status', '=', 'dl')]"/>
+                <filter string="Contacts Campaign Type" name="type_contacts" domain="[('type', '=', 'list')]"/>
+                <filter string="Numbers Campaign Type" name="type_numbers" domain="[('type', '=', 'number')]"/>
+                <filter string="Contact List Campaign Type" name="type_mail" domain="[('type', '=', 'mail')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="list_form" model="ir.ui.view">
+        <field name="name">List Campaign Sms Form</field>
+        <field name="model">list.sms</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="status" widget="statusbar"/>
+                    <button name="cancel_sms" string="Cancel" type="object"
+                        attrs="{'invisible': [('status', '!=', 's')]}"/>
+                    <button name="reschedule_sms" string="Reschedule" type="object"
+                        attrs="{'invisible': [('status', '!=', 'c')]}"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name" string="Subject"/>
+                        <field name="content" style="height:100px;"/>
+                        <field name="type" string="Campagin Type" widget="radio"/>
+                        <field name="url" widget="selection"/>
+                        <field name="now" string="Send Now" attrs="{'invisible': [('send_time', '!=', False)]}"/>
+                        <field name="send_time" attrs="{'invisible': [('now', '!=', False)]}"/>
+
+                    </group>
+                    <notebook>
+                        <page string="Destination">
+                            <h4 attrs="{'invisible': [('type', '!=', 'mail')]}">Mailing List</h4>
+                            <field name="mail" widget="many2many_tags" string="Mailing List" attrs="{'invisible': [('type', '!=', 'mail')]}"/>
+                            <h4 attrs="{'invisible': [('type', '!=', 'list')]}">Select Contacts</h4>
+                            <field name="contacts" string="Contacts" attrs="{'invisible': [('type', '!=', 'list')]}"/>
+                            <h4 attrs="{'invisible': [('type', '!=', 'number')]}">Numbers</h4>
+                            <field name="number_lines" attrs="{'invisible': [('type', '!=', 'number')]}">
+                                <tree string="Numbers" editable="bottom">
+                                    <field name="number" placeholder="0912345678"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                    <footer>
+                        <button name="send_message" type="object" string="Send Now?"
+                                class="oe_read_only"
+                                attrs="{'invisible': [('status', '=', 'st')]}"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_list_sms" model="ir.actions.act_window">
+        <field name="name">Campaign Based Sms</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">list.sms</field>
+        <field name="view_mode">tree,kanban,form,calendar</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Add sms campaign here
+            </p>
+        </field>
+    </record>
+    <!--    <record id="r_sms_search" model="ir.ui.view">-->
+    <!--        <field name="name">sms.s.search</field>-->
+    <!--        <field name="model">r.sms</field>-->
+    <!--        <field name="priority">1</field>-->
+    <!--        <field name="arch" type="xml">-->
+    <!--            <search string="Search Sent Messages">-->
+    <!--                <field name="fr"/>-->
+    <!--                <field name="content"/>-->
+    <!--                <field name="partner_id"/>-->
+    <!--            </search>-->
+    <!--        </field>-->
+    <!--    </record>-->
+
+
+
+    <menuitem id="jasmin_list_sms"
+              parent="jasmin_menu_root"
+              name="SMS Campaign"
+              action="action_list_sms"
+              sequence="1"/>
+
+
+    <!-- Define action for scheduled SMS -->
+    <record id="action_scheduled_sms" model="ir.actions.act_window">
+        <field name="name">Scheduled SMS</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">list.sms</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('status', '=', 's')]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No scheduled SMS found.
+            </p>
+        </field>
+    </record>
+
+    <!-- Add menu item for scheduled SMS -->
+    <menuitem id="menu_scheduled_sms"
+              parent="jasmin_menu_root"
+              name="Scheduled SMS"
+              action="action_scheduled_sms"
+              sequence="2"/>
+
+
+</odoo>

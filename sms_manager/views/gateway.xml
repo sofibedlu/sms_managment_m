@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="config_tree" model="ir.ui.view">
+        <field name="name">Gateway Config Tree</field>
+        <field name="model">gateway.sms</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" string="Name"/>
+                <field name="url" string="Url Address"/>
+                <field name="username" string="Username"/>
+                <field name="pwd" string="Password"/>
+                <field name="create_date" string="Date"/>
+                <field name="type" string="Type"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="gateway_form" model="ir.ui.view">
+        <field name="name">Received Sms Form</field>
+        <field name="model">gateway.sms</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name" string="Name"/>
+                        <field name="url" string="Url Address"/>
+                    </group>
+                    <group>
+                        <field name="type" string="Type"/>
+                        <field name="code" string="Short Code"/>
+                        <!-- <field name="default" string="Default SMPP" attrs="{'invisible': [('type', '=', 'http')]}"/> -->
+                        <field name="default" string="Default Gateway"/>
+                    </group>
+                </sheet>
+                <sheet>
+                    <group>
+                        <field name="username" string="Username"/>
+                        <field name="pwd" string="Password"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_config_sms" model="ir.actions.act_window">
+        <field name="name">Sms Gateway Config</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">gateway.sms</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Setup Gateway configuration here
+            </p>
+        </field>
+    </record>
+
+    <record id="gateway_sms_search" model="ir.ui.view">
+        <field name="name">sms.gateway.search</field>
+        <field name="model">gateway.sms</field>
+        <field name="priority">1</field>
+        <field name="arch" type="xml">
+            <search string="Search Your Gateways Here">
+                <field name="name"/>
+                <field name="url"/>
+                <field name="username"/>
+            </search>
+        </field>
+    </record>
+
+    <menuitem id="config_jasmin_menu_root"
+              parent="jasmin_menu_root"
+              name="Gateway Config"
+              action="action_config_sms"
+              sequence="6"/>
+    <record id="config_jasmin_menu_root" model="ir.ui.menu" >
+    <field name="groups_id" eval="[(6,0, [ ref('group_jasminsms_admin')])]"/>
+    </record>
+
+</odoo>

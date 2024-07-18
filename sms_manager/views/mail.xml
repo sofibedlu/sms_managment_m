@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="mail_tree" model="ir.ui.view">
+        <field name="name">Make Mailing List</field>
+        <field name="model">mail.sms</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" string="Name"/>
+                <field name="descri" string="Description"/>
+                <field name="total" string="Total Recipents"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="mail_form" model="ir.ui.view">
+        <field name="name">Contact Mailing List</field>
+        <field name="model">mail.sms</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name" string="Name"/>
+                        <field name="descri" string="Description"/>
+                        <field name="list_type" widget="radio" string="List Type"/>
+                        <field name="contacts" string="Contacts" attrs="{'invisible': [('list_type', '!=', 'contacts')]}"/>
+                        <field name="numbers" string="Numbers" attrs="{'invisible': [('list_type', '!=', 'numbers')]}">
+                            <tree string="Numbers" editable="bottom">
+                                    <field name="number" placeholder="0912345678"/>
+                            </tree>
+                        </field>
+                    </group>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_mail_sms" model="ir.actions.act_window">
+        <field name="name">Contact</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">mail.sms</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create and Manage Your Mailing List
+            </p>
+        </field>
+    </record>
+
+    <!--    <record id="gateway_sms_search" model="ir.ui.view">-->
+    <!--        <field name="name">sms.gateway.search</field>-->
+    <!--        <field name="model">gateway.sms</field>-->
+    <!--        <field name="priority">1</field>-->
+    <!--        <field name="arch" type="xml">-->
+    <!--            <search string="Search Your Gateways Here">-->
+    <!--                <field name="name"/>-->
+    <!--                <field name="url"/>-->
+    <!--                <field name="username"/>-->
+    <!--            </search>-->
+    <!--        </field>-->
+    <!--    </record>-->
+
+    <menuitem id="mail_jasmin_menu_root"
+              parent="jasmin_menu_root"
+              name="Mailing List"
+              action="action_mail_sms"
+              sequence="5"/>
+
+</odoo>

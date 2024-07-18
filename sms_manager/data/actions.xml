@@ -1,0 +1,31 @@
+<odoo>
+    <record id="ir_cron_auto_post_draft_entry" model="ir.cron">
+        <field name="name">Ready To receive messages</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="nextcall"
+               eval="(DateTime.now() + timedelta(minutes=4)).strftime('%Y-%m-%d %H:%M:%S')"/>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_r_sms"/>
+        <field name="code">model.bind_client()</field>
+        <field name="state">code</field>
+<!--         <field name="groups_id" eval="[(4, ref('group_jasminsms_user'))]"/>-->
+        <field name="active" eval="True"/>
+    </record>
+
+      <record id="ir_cron_check_scheduled_send" model="ir.cron">
+        <field name="name">Checking Scheduled Send</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field name="nextcall"
+               eval="(DateTime.now() + timedelta(minutes=2)).strftime('%Y-%m-%d %H:%M:%S')"/>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_list_sms"/>
+        <field name="code">model.scheduled_sender()</field>
+        <field name="state">code</field>
+<!--         <field name="groups_id" eval="[(4, ref('group_jasminsms_user'))]"/>-->
+        <field name="active" eval="True"/>
+    </record>
+</odoo>

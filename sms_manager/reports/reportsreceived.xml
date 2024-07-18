@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="sms_manager.rece">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <p>Message</p>
+                        <h2 t-field="doc.content"/>
+                        <p>From
+                            <span t-field="doc.fr"/>
+                        </p>
+                        <p>Create Date
+                            <span t-field="doc.create_date"/>
+                        </p>
+                        Releated Conversations
+                        <t t-foreach="doc.other_sms_ids" t-as="do">
+                            <li>
+                                <span t-field="do.msg"/>
+                                <span t-field="do.to"/>
+                            </li>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+    <record id="action_report_rece" model="ir.actions.report">
+        <field name="name">Received Messages</field>
+        <field name="model">r.sms</field>
+        <field name="binding_model_id" ref="model_r_sms"/>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">sms_manager.rece</field>
+        <field name="binding_type">report</field>
+    </record>
+
+</odoo>
